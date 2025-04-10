@@ -77,7 +77,8 @@
 
             <!-- Dropdown for Column Selector -->
             <div class="dropdown">
-                <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" id="columnDropdown" disabled>
+                <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                    id="columnDropdown" disabled>
                     Select Columns
                 </button>
                 <div class="dropdown-menu dropdown-checkboxes" id="column-selector" aria-labelledby="columnDropdown">
@@ -239,14 +240,25 @@
         function filterTable() {
             const input = $('#search-input').val().toLowerCase().trim();
             const keywords = input.split(/\s+/);
+
             filteredData = data.filter(row =>
                 keywords.every(keyword =>
                     row.join(' ').toLowerCase().includes(keyword)
                 )
             );
+
             currentPage = 1;
-            buildTableFromData(currentPage);
+
+            if (filteredData.length === 0) {
+                toggleNoResults(true);
+                document.getElementById("table-container").innerHTML = "";
+                document.getElementById("pagination").innerHTML = "";
+            } else {
+                toggleNoResults(false);
+                buildTableFromData(currentPage);
+            }
         }
+
 
         function resetTable() {
             $('#search-input').val('');
